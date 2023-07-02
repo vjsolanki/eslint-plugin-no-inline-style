@@ -1,1 +1,1 @@
-# eslint-plugin-no-inline-style
+# eslint-plugin-jsx-no-inline-style

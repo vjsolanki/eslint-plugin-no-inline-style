@@ -1,5 +1,5 @@
 {
-	"name": "eslint-plugin-no-inline-style",
+	"name": "eslint-plugin-jsx-no-inline-style",
 	"description": "ESLint Plugin for Validating JSX Nesting",
 	"version": "0.0.1",
 	"author": "Vijay Solanki",

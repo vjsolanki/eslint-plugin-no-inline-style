@@ -11,7 +11,6 @@ export const noInlineStyle: Rule.RuleModule = {
 					const doesInlineStyleExist = node.openingElement.attributes.find(
 						attr => attr.name.name === 'style'
 					)
-					let showWarning = Boolean(doesInlineStyleExist)
 
 					if (doesInlineStyleExist.value.type === 'JSXExpressionContainer') {
 						const variableName = doesInlineStyleExist.value.expression.properties.find(
