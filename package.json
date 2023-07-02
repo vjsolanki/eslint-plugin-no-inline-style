@@ -1,0 +1,74 @@
+{
+	"name": "eslint-plugin-no-inline-style",
+	"description": "ESLint Plugin for Validating JSX Nesting",
+	"version": "0.0.0",
+	"author": "Vijay Solanki",
+	"main": "dist/index.js",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/vjsolanki/eslint-plugin-no-inline-style.git"
+	},
+	"scripts": {
+		"clean": "rimraf dist",
+		"build": "rollup -c",
+		"prettier": "prettier . -w",
+		"test": "jest",
+		"prepublishOnly": "npm run clean && npm run build",
+		"____prepare": "husky install"
+	},
+	"files": [
+		"README.md",
+		"package.json",
+		"dist",
+		"assets"
+	],
+	"keywords": [
+		"eslint",
+		"typescript",
+		"inline styles"
+	],
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^22.0.1",
+		"@rollup/plugin-node-resolve": "^13.3.0",
+		"@types/eslint": "7.2.6",
+		"@types/estree": "0.0.46",
+		"@types/estree-jsx": "^0.0.2",
+		"@types/node": "14.14.21",
+		"@typescript-eslint/parser": "4.13.0",
+		"eslint": "7.18.0",
+		"husky": "^8.0.1",
+		"jest": "26.6.3",
+		"prettier": "2.2.1",
+		"pretty-quick": "3.1.0",
+		"rimraf": "3.0.2",
+		"rollup": "^2.76.0",
+		"rollup-plugin-ts": "^3.0.2",
+		"ts-jest": "26.4.4",
+		"typescript": "4.1.3"
+	},
+	"peerDependencies": {
+		"eslint": ">=4.0.0"
+	},
+	"jest": {
+		"globals": {
+			"ts-jest": {
+				"diagnostics": false
+			}
+		},
+		"transform": {
+			"^.+\\.ts$": "ts-jest"
+		},
+		"testRegex": "(src/.*\\.test)\\.ts$",
+		"testPathIgnorePatterns": [
+			"/node_modules/",
+			"\\.d\\.ts$",
+			"lib/.*"
+		],
+		"moduleFileExtensions": [
+			"js",
+			"ts",
+			"json"
+		]
+	}
+}
