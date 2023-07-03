@@ -1,7 +1,8 @@
 # eslint-plugin-jsx-no-inline-style
 
-ESLint Plugin Guide:
-https://www.alibabacloud.com/blog/write-eslint-rules-that-meet-needs_599280
+ESlint plugin to disallow inline styles in jsx.
+
+<img src="assets/demo.png"  />
 
 # Usage:
 
@@ -28,3 +29,6 @@ npm install eslint-plugin-jsx-no-inline-style
 	}
 }
 ```
+
+ESLint Plugin Guide:
+https://www.alibabacloud.com/blog/write-eslint-rules-that-meet-needs_599280
