@@ -9,19 +9,27 @@ export const noInlineStyle: Rule.RuleModule = {
 			JSXElement(node) {
 				if (node.openingElement.attributes.length) {
 					const doesInlineStyleExist = node.openingElement.attributes.find(
-						attr => attr.name.name === 'style'
+						attr => attr.type === 'JSXAttribute' && attr.name.name === 'style'
 					)
 
-					if (doesInlineStyleExist.value.type === 'JSXExpressionContainer') {
-						const variableName = doesInlineStyleExist.value.expression.properties.find(
-							p => p.value.type === 'Literal'
-						)
+					if (
+						doesInlineStyleExist &&
+						doesInlineStyleExist.value &&
+						doesInlineStyleExist.value.type === 'JSXExpressionContainer'
+					) {
+						if (
+							doesInlineStyleExist.value.expression.type === 'ObjectExpression'
+						) {
+							const variableName = doesInlineStyleExist.value.expression.properties.find(
+								p => p.value.type === 'Literal'
+							)
 
-						if (variableName) {
-							context.report({
-								node: doesInlineStyleExist,
-								message: 'Inline Style is not allowed',
-							})
+							if (variableName) {
+								context.report({
+									node: doesInlineStyleExist,
+									message: 'Inline Style is not allowed',
+								})
+							}
 						}
 					}
 				}
