@@ -4,6 +4,10 @@ ESlint plugin to disallow inline styles in jsx.
 
 <img src="assets/demo.png"  />
 
+<br/>
+
+<img src="assets/valid-invalid.png"  />
+
 # Usage:
 
 ## Install
