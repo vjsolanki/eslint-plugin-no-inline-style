@@ -1,7 +1,10 @@
-import { RuleTester } from 'eslint'
+import { ESLintUtils } from '@typescript-eslint/utils'
 import { noInlineStyle } from '../rules/noInlineStyle'
 
-const tester = new RuleTester({
+const parserResolver = require.resolve('@typescript-eslint/parser')
+
+const tester = new ESLintUtils.RuleTester({
+	parser: parserResolver as any,
 	parserOptions: {
 		ecmaVersion: 2015,
 		sourceType: 'module',
@@ -26,7 +29,7 @@ tester.run('no-invalid-jsx-nesting', noInlineStyle, {
 			code: '<p style={{color: "red"}}>Hello world</p>',
 			errors: [
 				{
-					message: 'Inline Style is not allowed',
+					messageId: 'noInlineStyles',
 				},
 			],
 		},
@@ -34,7 +37,7 @@ tester.run('no-invalid-jsx-nesting', noInlineStyle, {
 			code: '<p style={{color: "red", fontSize: `${size}px`}}>Hello world</p>',
 			errors: [
 				{
-					message: 'Inline Style is not allowed',
+					messageId: 'noInlineStyles',
 				},
 			],
 		},
@@ -43,7 +46,7 @@ tester.run('no-invalid-jsx-nesting', noInlineStyle, {
 				'<p style={isDesktop ? { marginTop: "-20px" } : null}>Hello world</p>',
 			errors: [
 				{
-					message: 'Inline Style is not allowed',
+					messageId: 'noInlineStyles',
 				},
 			],
 		},
@@ -51,7 +54,7 @@ tester.run('no-invalid-jsx-nesting', noInlineStyle, {
 			code: '<p style={{fontSize: `24px`}}>Hello world</p>',
 			errors: [
 				{
-					message: 'Inline Style is not allowed',
+					messageId: 'noInlineStyles',
 				},
 			],
 		},

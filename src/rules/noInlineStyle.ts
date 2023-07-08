@@ -1,35 +1,74 @@
-import type { Rule } from 'eslint'
+import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils'
 
-export const noInlineStyle: Rule.RuleModule = {
+type MessageIds = 'noInlineStyles'
+
+function checkDynamicStyleValueInStyleObject(properties: any) {
+	return properties.find((property: any) => {
+		if (property.type === AST_NODE_TYPES.Property) {
+			return (
+				property.value.type === 'Literal' ||
+				(property.value.type === 'TemplateLiteral' &&
+					property.value.expressions.length === 0)
+			)
+		}
+		return null
+	})
+}
+
+export const noInlineStyle: TSESLint.RuleModule<MessageIds> = {
+	defaultOptions: [],
 	meta: {
 		type: 'problem',
+		messages: {
+			noInlineStyles: 'Inline Style is not allowed',
+		},
+		schema: [],
 	},
 	create(context) {
 		return {
 			JSXElement(node) {
-				if (node.openingElement.attributes.length) {
-					const doesInlineStyleExist = node.openingElement.attributes.find(
-						attr => attr.type === 'JSXAttribute' && attr.name.name === 'style'
-					)
+				const elementWithStyleAttribute = node.openingElement.attributes.find(
+					attr => {
+						return (
+							attr.type === AST_NODE_TYPES.JSXAttribute &&
+							attr.name.name === 'style'
+						)
+					}
+				)
 
+				if (
+					elementWithStyleAttribute === undefined ||
+					elementWithStyleAttribute === null
+				)
+					return
+
+				if (elementWithStyleAttribute.type === AST_NODE_TYPES.JSXAttribute) {
 					if (
-						doesInlineStyleExist &&
-						doesInlineStyleExist.value &&
-						doesInlineStyleExist.value.type === 'JSXExpressionContainer'
+						elementWithStyleAttribute.value &&
+						elementWithStyleAttribute.value.type ===
+							AST_NODE_TYPES.JSXExpressionContainer
 					) {
-						if (
-							doesInlineStyleExist.value.expression.type === 'ObjectExpression'
-						) {
-							const variableName = doesInlineStyleExist.value.expression.properties.find(
-								p => p.value.type === 'Literal'
-							)
+						let element
 
-							if (variableName) {
-								context.report({
-									node: doesInlineStyleExist,
-									message: 'Inline Style is not allowed',
-								})
-							}
+						if (
+							elementWithStyleAttribute.value.expression.type ===
+							AST_NODE_TYPES.ObjectExpression
+						) {
+							element = checkDynamicStyleValueInStyleObject(
+								elementWithStyleAttribute.value.expression.properties
+							)
+						} else if (
+							elementWithStyleAttribute.value.expression.type ===
+							AST_NODE_TYPES.ConditionalExpression
+						) {
+							element = elementWithStyleAttribute
+						}
+
+						if (element) {
+							context.report({
+								node: elementWithStyleAttribute,
+								messageId: 'noInlineStyles',
+							})
 						}
 					}
 				}
