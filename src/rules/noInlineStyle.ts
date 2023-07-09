@@ -2,7 +2,7 @@ import type { Rule } from 'eslint';
 
 type MessageIds = 'noInlineStyles';
 
-function checkForDynamicValue(properties: any): boolean {
+function hasStaticProperty(properties: any): boolean {
 	return properties.some((property: any) => {
 		if (property && !property.value) return false;
 		if (
@@ -41,7 +41,7 @@ export const noInlineStyle: Rule.RuleModule = {
 				let showError;
 
 				if (node.value.expression.type === 'ObjectExpression') {
-					showError = checkForDynamicValue(node.value.expression.properties);
+					showError = hasStaticProperty(node.value.expression.properties);
 				} else if (node.value.expression.type === 'ConditionalExpression') {
 					showError = true;
 				}
