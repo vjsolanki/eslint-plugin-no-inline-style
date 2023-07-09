@@ -53,5 +53,14 @@ tester.run('no-invalid-jsx-nesting', noInlineStyle, {
 				},
 			],
 		},
+		{
+			code:
+				'<p style={{ width: isTabletScreen ? "max-content" : "100%" }}>Hello world</p>',
+			errors: [
+				{
+					messageId: 'noInlineStyles',
+				},
+			],
+		},
 	],
 });

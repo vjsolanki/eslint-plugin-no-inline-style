@@ -4,7 +4,12 @@ type MessageIds = 'noInlineStyles';
 
 function checkForDynamicValue(properties: any): boolean {
 	return properties.some((property: any) => {
-		if (property.value.type === 'Literal') return true;
+		if (property && !property.value) return false;
+		if (
+			property.value.type === 'Literal' ||
+			property.value.type === 'ConditionalExpression'
+		)
+			return true;
 
 		if (
 			property.value.type === 'TemplateLiteral' &&
