@@ -1,10 +1,7 @@
-import { ESLintUtils } from '@typescript-eslint/utils'
-import { noInlineStyle } from '../rules/noInlineStyle'
+import { RuleTester } from 'eslint';
+import { noInlineStyle } from '../rules/noInlineStyle';
 
-const parserResolver = require.resolve('@typescript-eslint/parser')
-
-const tester = new ESLintUtils.RuleTester({
-	parser: parserResolver as any,
+const tester = new RuleTester({
 	parserOptions: {
 		ecmaVersion: 2015,
 		sourceType: 'module',
@@ -12,8 +9,7 @@ const tester = new ESLintUtils.RuleTester({
 			jsx: true,
 		},
 	},
-})
-
+});
 tester.run('no-invalid-jsx-nesting', noInlineStyle, {
 	valid: [
 		{ code: '<p>Hello world</p>' },
@@ -42,8 +38,7 @@ tester.run('no-invalid-jsx-nesting', noInlineStyle, {
 			],
 		},
 		{
-			code:
-				'<p style={isDesktop ? { marginTop: "-20px" } : null}>Hello world</p>',
+			code: '<p style={isDesktop ? { marginTop: "-20px" } : null}>Hello world</p>',
 			errors: [
 				{
 					messageId: 'noInlineStyles',
@@ -59,4 +54,4 @@ tester.run('no-invalid-jsx-nesting', noInlineStyle, {
 			],
 		},
 	],
-})
+});

@@ -1,23 +1,22 @@
-import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils'
+import type { Rule } from 'eslint';
 
-type MessageIds = 'noInlineStyles'
+type MessageIds = 'noInlineStyles';
 
 function checkForDynamicValue(properties: any): boolean {
 	return properties.some((property: any) => {
-		if (property.value.type === 'Literal') return true
+		if (property.value.type === 'Literal') return true;
 
 		if (
 			property.value.type === 'TemplateLiteral' &&
 			property.value.expressions.length === 0
 		)
-			return true
+			return true;
 
-		return false
-	})
+		return false;
+	});
 }
 
-export const noInlineStyle: TSESLint.RuleModule<MessageIds> = {
-	defaultOptions: [],
+export const noInlineStyle: Rule.RuleModule = {
 	meta: {
 		type: 'problem',
 		messages: {
@@ -28,29 +27,27 @@ export const noInlineStyle: TSESLint.RuleModule<MessageIds> = {
 	create(context) {
 		return {
 			JSXAttribute(node) {
-				if (node.name.name !== 'style') return
+				if (node.name.name !== 'style') return;
 
-				if (!node.value) return
+				if (!node.value) return;
 
-				if (node.value.type !== AST_NODE_TYPES.JSXExpressionContainer) return
+				if (node.value.type !== 'JSXExpressionContainer') return;
 
-				let showError
+				let showError;
 
-				if (node.value.expression.type === AST_NODE_TYPES.ObjectExpression) {
-					showError = checkForDynamicValue(node.value.expression.properties)
-				} else if (
-					node.value.expression.type === AST_NODE_TYPES.ConditionalExpression
-				) {
-					showError = true
+				if (node.value.expression.type === 'ObjectExpression') {
+					showError = checkForDynamicValue(node.value.expression.properties);
+				} else if (node.value.expression.type === 'ConditionalExpression') {
+					showError = true;
 				}
 
 				if (showError) {
 					context.report({
 						node: node,
 						messageId: 'noInlineStyles',
-					})
+					});
 				}
 			},
-		}
+		};
 	},
-}
+};
